@@ -30,7 +30,8 @@ public class PortfolioMessage implements Serializable
 	{
 		long seed = System.nanoTime();
 		//Using the same seed will assure the lists be the shuffled exactly the same way.
-		Collections.shuffle(images_arr, new Random(seed));
-		Collections.shuffle(selected_images, new Random(seed));
+		Random rand = new Random(seed);
+		Collections.shuffle(images_arr, rand);
+		Collections.shuffle(selected_images, rand);
 	}
 }

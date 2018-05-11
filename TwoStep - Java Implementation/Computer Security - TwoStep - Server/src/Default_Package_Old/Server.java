@@ -1,3 +1,4 @@
+package Default_Package_Old;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,12 +28,24 @@ public class Server extends Thread
 				socket = server_socket.accept();
 				if(socket!=null)
 				{
-					MessageHandler msg_hndlr = new MessageHandler(new DetailedSocket(socket));
-					msg_hndlr.doYourThing();
+					MessageHandler get_dimension = new MessageHandler(new DetailedSocket(socket),null,0);
+					get_dimension.doYourThing();
 				}
 			}
 			catch(IOException e)
 			{}
 		}
+	}
+	
+	public synchronized void addToMap(int board_dimension, DetailedSocket socket) throws IOException
+	{
+		if(awaiting_partner.containsKey(board_dimension))
+		{
+			DetailedSocket match = awaiting_partner.remove(board_dimension);
+			MessageHandler game = new MessageHandler(socket,match,board_dimension);
+			game.doYourThing();
+		}
+		else
+			awaiting_partner.put(board_dimension, socket);
 	}
 }

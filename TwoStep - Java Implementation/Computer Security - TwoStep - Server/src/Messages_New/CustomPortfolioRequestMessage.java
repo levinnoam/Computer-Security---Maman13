@@ -14,4 +14,14 @@ public class CustomPortfolioRequestMessage implements Serializable
 
 	
 	private ArrayList<ImageIcon> uploaded_images_arr = null;
+
+
+	public ArrayList<ImageIcon> getUploadedImagesArr() {
+		return uploaded_images_arr;
+	}
+
+
+	public void setUploadedImagesArr(ArrayList<ImageIcon> uploaded_images_arr) {
+		this.uploaded_images_arr = uploaded_images_arr;
+	}
 }

@@ -12,4 +12,19 @@ public class LoginStatusMessage implements Serializable
 
 	private Boolean login_successful;
 	private String additional_information;
+	public Boolean getLoginStatus() {
+		return login_successful;
+	}
+	public void setLoginStatus(Boolean login_successful) {
+		this.login_successful = login_successful;
+	}
+	
+	public String toString()
+	{ 
+		return additional_information;
+	}
+	public void setLoginStatusString(String additional_information)
+	{
+		this.additional_information = additional_information;
+	}
 }

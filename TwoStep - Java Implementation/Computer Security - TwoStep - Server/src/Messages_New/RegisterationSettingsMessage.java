@@ -2,7 +2,7 @@ package Messages_New;
 
 import java.io.Serializable;
 
-public class RegisterSettingsMessage implements Serializable 
+public class RegisterationSettingsMessage implements Serializable 
 {
 	private static final long serialVersionUID = 8140617371657062731L;
 

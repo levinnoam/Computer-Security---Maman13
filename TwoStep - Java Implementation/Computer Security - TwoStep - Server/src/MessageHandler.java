@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import Messages.*;
+import Messages_Old.*;
 
 public class MessageHandler
 {

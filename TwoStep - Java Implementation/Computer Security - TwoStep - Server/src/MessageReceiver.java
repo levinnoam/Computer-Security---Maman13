@@ -1,8 +1,8 @@
 import java.io.IOException;
 
-import Messages.GameStatusMessage;
-import Messages.NewGameMessage;
-import Messages.RequestIconMessage;
+import Messages_Old.GameStatusMessage;
+import Messages_Old.NewGameMessage;
+import Messages_Old.RequestIconMessage;
 
 
 public class MessageReceiver extends Thread

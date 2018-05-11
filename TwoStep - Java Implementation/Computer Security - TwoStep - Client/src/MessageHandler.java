@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
-import Messages.*;
+import Messages_Old.*;
 
 
 public class MessageHandler extends Thread

@@ -8,26 +8,26 @@ import java.util.ArrayList;
  * 2. Negative/Positive feedback from the server for the entire registration process. Necessary message in this case.
  * 3. Timeout occurred during the registration process. Must be started anew.
  */
-public class RegisterationStatusMessage implements Serializable
+public class RegistrationStatusMessage implements Serializable
 {
 	private static final long serialVersionUID = -6913112605166815897L;
 
-	private Boolean registeration_succesful;
-	private ArrayList<Exception> registeration_exceptions;
+	private Boolean registration_succesful;
+	private ArrayList<Exception> registration_exceptions;
 	
-	public Boolean getRegisterationStatus() {
-		return registeration_succesful;
+	public Boolean getRegistrationStatus() {
+		return registration_succesful;
 	}
 	public void setRegisteratiionStatus(Boolean register_succesful) {
-		this.registeration_succesful = register_succesful;
+		this.registration_succesful = register_succesful;
 	}
 	
-	public ArrayList<Exception> getRegisterationExceptions()
+	public ArrayList<Exception> getRegistrationExceptions()
 	{
-		return registeration_exceptions;
+		return registration_exceptions;
 	}
-	public void setRegisterationExceptions(ArrayList<Exception> registeration_exceptions)
+	public void setRegistrationExceptions(ArrayList<Exception> registration_exceptions)
 	{
-		this.registeration_exceptions = registeration_exceptions;
+		this.registration_exceptions = registration_exceptions;
 	}
 }

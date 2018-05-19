@@ -1,7 +1,4 @@
-
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,13 +33,14 @@ public class Authentication extends JFrame implements ActionListener
 
 	private static final int DEFAULT_NUM_OF_PORTFOLIO_STEPS = 0;
 	private static final int DEFAULT_NUM_OF_IMAGES_PER_PORTFOLIO = 4;
+	private static final int portfolio_window_size = 1000;
 
 	
 	private MessageHandler msg_hndlr;
 	
-	private int window_size = 0;
 	private int num_of_images_per_portfolio = 0;
 	private ArrayList<ImageButton> cur_portfolio = null;
+	private ArrayList<Boolean> selected_images = null;
 	private JButton go_to_main_screen;
 	private JLabel wait = new JLabel("Please wait for response from the server");
 	
@@ -115,31 +113,27 @@ public class Authentication extends JFrame implements ActionListener
      	JOptionPane.showMessageDialog(null, wait);
 	}
 	
-	public void startRegistration(int board_size, ImageIcon card_back, ArrayList<String> cards_arr, boolean first_turn)
+	public void setPorfolio(ArrayList<ImageIcon> images_arr)
 	{
 		SwingUtilities.getWindowAncestor(wait).setVisible(false);
-		
-		turn = first_turn;
-		this.window_size = board_size;
-		this.num_of_images_per_portfolio = cards_arr.size();
+		this.num_of_images_per_portfolio = images_arr.size();
 		
 		this.cur_portfolio = new ArrayList<ImageButton>();
 		for(int i=0;i<this.num_of_images_per_portfolio;i++)
 		{
-			cur_portfolio.add(new ImageButton(this.window_size/this.num_of_images_per_portfolio,card_back,cards_arr.get(i),i+1));
+			cur_portfolio.add(new ImageButton(Authentication.portfolio_window_size/this.num_of_images_per_portfolio,images_arr.get(i),i+1));
 			cur_portfolio.get(i).addActionListener(this);
 		}
+		//Initialise with False for each image.
+		this.selected_images = new ArrayList<Boolean>(num_of_images_per_portfolio);
 		
 		setLayout(new GridLayout((int)Math.sqrt((double)num_of_images_per_portfolio),(int)Math.sqrt((double)num_of_images_per_portfolio)));
-		setSize(board_size,board_size);
+		setSize(portfolio_window_size,portfolio_window_size);
 		
-		for(ImageButton card : this.cur_portfolio)
-		{
-			add(card);
-		}
+		for(ImageButton img : this.cur_portfolio)
+			add(img);
+
 		setVisible(true);
-		
-		JOptionPane.showMessageDialog(null, turn?("It's Your Turn!"):("It's Your Opponent's Turn!"));
 		
 		WindowListener exitListener = new WindowAdapter()
 		{
@@ -147,66 +141,11 @@ public class Authentication extends JFrame implements ActionListener
 			public void windowClosing(WindowEvent e)
 			{
 				//Notify the server that you are leaving
-		     	msg_hndlr.sendMessage(MessageHandler.QUIT_GAME, null);
+		     	msg_hndlr.sendMessage(MessageHandler.QUIT, null);
 			}
 		};
 		this.addWindowListener(exitListener);
 		
-	}
-	
-	public void flipCard(int card_num, ImageIcon icon)
-	{
-		cur_portfolio.get(card_num-1).flipCard(icon);
-		cur_portfolio.get(card_num-1).repaint();
-		
-		turn_counter++;
-		if(turn_counter == 2)
-		{
-			turn = !turn;
-			turn_counter = 0;
-			JOptionPane.showMessageDialog(null, turn?("It's Your Turn!"):("It's Your Opponent's Turn!"));
-		}
-	}
-	
-	public void gameOver(boolean is_winner,int my_score,int opp_score)
-	{
-		getContentPane().removeAll();
-		
-		setSize(500,500);
-		setLayout(new BorderLayout());
-		
-		JLabel text;
-		JLabel my_s = new JLabel("Your score is: " + my_score);
-		my_s.setBackground(Color.CYAN);
-		JLabel opp_s = new JLabel("Your opponent's score is: " + opp_score);
-		opp_s.setBackground(Color.CYAN);
-		
-		if((my_score+opp_score)*2<num_of_images_per_portfolio-1)
-		{
-			text = new JLabel("      The other player surrendered.    YOU WON!");
-		}
-		else if(my_score == opp_score)
-		{
-			text = new JLabel("                                    It's a tie!");
-		}
-		else
-		{
-			text = new JLabel((is_winner)?("                                   YOU WON!!!! :D"):("                                   YOU LOST :("));
-		}
-		text.setBackground((is_winner)?Color.PINK:Color.RED);
-		
-		Font font = new Font("Arial",Font.BOLD,20);
-		my_s.setFont(font);
-		opp_s.setFont(font);
-		text.setFont(font);
-		
-		add(my_s,BorderLayout.WEST);
-		add(text,BorderLayout.NORTH);
-		add(opp_s,BorderLayout.EAST);
-		add(go_to_main_screen,BorderLayout.SOUTH);
-     	
-		revalidate();
-		setVisible(true);
 	}
 	
 	@Override
@@ -217,13 +156,19 @@ public class Authentication extends JFrame implements ActionListener
 		if(obj instanceof ImageButton)
 		{
 			button = (ImageButton)obj;
-			if(!button.isFlipped())
+			//Object args[] = {button.getImageName(),button.getImageNumber()};
+			if(button.isSelected())
 			{
-				Object args[] = {button.getCardImageName(),button.getCardNumber()};
-				msg_hndlr.sendMessage(MessageHandler.REQUEST_ICON, args);
+				button.deselectImage();
+				selected_images.set(button.getImageNumber()-1, false);
 			}
+			else
+				button.selectImage();
+				selected_images.set(button.getImageNumber()-1, true);
+			
+			button.repaint();
 		}
-		else if(obj == go_to_main_screen)
+/*		else if(obj == go_to_main_screen)
 		{
 			setVisible(false);
 			getContentPane().removeAll();
@@ -232,7 +177,7 @@ public class Authentication extends JFrame implements ActionListener
 			Object args[] = {(size==null)?(DEFAULT_NUM_OF_IMAGES_PER_PORTFOLIO):(Integer.parseInt(size))};
 	     	msg_hndlr.sendMessage(MessageHandler.NEW_GAME, args);
 	     	JOptionPane.showMessageDialog(null, wait);
-		}
+		}*/
 		
 	}
 

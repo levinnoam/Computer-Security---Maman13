@@ -1,53 +1,57 @@
 
+import java.awt.Color;
 import java.awt.Image;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class ImageButton extends JButton
 {
 	private static final long serialVersionUID = -4654137065011732150L;
 	
-	private String front_file_name;
-	private int card_number;
-	private boolean flipped_f;
+	private int img_number;
+	private boolean selected_f;
+	private static Border thickBorder = new LineBorder(Color.WHITE, 12);
 	
-	public ImageButton(int size, ImageIcon back, String front_file_name, int card_number)
+	public ImageButton(int size, ImageIcon img, int img_number)
 	{
+		Image scaled_img = img.getImage().getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
 		this.setSize(size, size);
-		this.setIcon(back);
-		this.front_file_name = front_file_name;
-		this.card_number = card_number;
-		this.flipped_f = false;
+		this.setIcon(new ImageIcon(scaled_img));
+		this.img_number = img_number;
+		this.selected_f = false;
 	}
 	
-	public String getCardImageName()
+	public int getImageNumber()
 	{
-		return front_file_name;
-	}
-	public int getCardNumber()
-	{
-		return card_number;
+		return img_number;
 	}
 	
-	public boolean equals(ImageButton card)
+	public boolean equals(ImageButton img)
 	{
-		if(this.card_number == card.getCardNumber())
+		if(this.img_number == img.getImageNumber())
 			return true;
 		return false;
 	}
 	
-	public void flipCard(ImageIcon front)
+	public void selectImage()
 	{
-		Image scaled = front.getImage();
-		scaled = scaled.getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
-		this.setIcon(new ImageIcon(scaled));
-		this.flipped_f = true;
+		this.selected_f = true;
+		this.setBorder(thickBorder);
 	}
 	
-	public boolean isFlipped()
+	public void deselectImage()
 	{
-		return flipped_f;
+		this.selected_f = false;
+		this.setBorder(BorderFactory.createEmptyBorder());
+	}
+	
+	public boolean isSelected()
+	{
+		return selected_f;
 	}
 
 }

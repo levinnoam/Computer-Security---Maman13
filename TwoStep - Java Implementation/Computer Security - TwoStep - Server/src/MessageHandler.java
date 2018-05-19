@@ -35,7 +35,7 @@ public class MessageHandler
 	
 	public void doYourThing()
 	{
-		MessageReceiver msg_receiver = new MessageReceiver(socket, server, this);
+		MessageReceiver msg_receiver = new MessageReceiver(user_socket, server, this);
 		msg_receiver.start();
 	}
 	

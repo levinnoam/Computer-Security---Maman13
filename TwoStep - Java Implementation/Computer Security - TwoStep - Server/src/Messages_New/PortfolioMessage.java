@@ -25,13 +25,4 @@ public class PortfolioMessage implements Serializable
 	public void setSelectedImages(ArrayList<Boolean> selected_images) {
 		this.selected_images = selected_images;
 	}
-	
-	public void shufflePortfolio()
-	{
-		long seed = System.nanoTime();
-		//Using the same seed will assure the lists be the shuffled exactly the same way.
-		Random rand = new Random(seed);
-		Collections.shuffle(images_arr, rand);
-		Collections.shuffle(selected_images, rand);
-	}
 }

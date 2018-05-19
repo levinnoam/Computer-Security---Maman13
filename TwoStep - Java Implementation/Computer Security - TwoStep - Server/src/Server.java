@@ -8,13 +8,11 @@ public class Server extends Thread
 {
 	private static ServerSocket server_socket;
 	private boolean exit = false;
-	private static HashMap<Integer,DetailedSocket> awaiting_partner;
 	
 	public Server(ServerSocket s_socket)
 	{
 		Server.server_socket = s_socket;
 		MessageHandler.setServer(this);
-		awaiting_partner = new HashMap<Integer,DetailedSocket>();
 	}
 	
 	public void run()

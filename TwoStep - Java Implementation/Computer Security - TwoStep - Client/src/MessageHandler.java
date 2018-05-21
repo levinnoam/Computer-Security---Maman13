@@ -7,7 +7,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import Messages_New.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import Messages.*;
 
 
 public class MessageHandler extends Thread
@@ -152,7 +156,28 @@ public class MessageHandler extends Thread
 		{
 			while( (obj = in.readObject()) != null )
 			{
-				if ( obj instanceof PortfolioMessage )
+				if (obj instanceof NewRegistrationMessage)
+				{
+					JTextField username = new JTextField();
+					JTextField password = new JPasswordField();
+					Object[] message = {
+					    "Username:", username,
+					    "Password:", password
+					};
+
+					int option = JOptionPane.showConfirmDialog(null, message, "Register", JOptionPane.OK_CANCEL_OPTION);
+					if (option == JOptionPane.OK_OPTION) 
+					{
+						Object args[] = {username.getText(), password.getText()};
+						this.sendMessage(MessageHandler.CHOOSE_USERNAME_PASSWORD, args);
+					} 
+					else 
+					{
+					    System.exit(1);
+					}					
+					
+				}
+				else if ( obj instanceof PortfolioMessage )
 				{
 					PortfolioMessage msg = (PortfolioMessage)obj;
 					if(!exit)

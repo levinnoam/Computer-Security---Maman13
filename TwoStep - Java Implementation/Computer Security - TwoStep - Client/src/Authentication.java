@@ -77,7 +77,7 @@ public class Authentication extends JFrame implements ActionListener
      	}
      	
      	String[] options = {"Login", "Register", "Exit"};
-        int login_or_register = JOptionPane.showOptionDialog(null, "Performs required operation.",
+        int login_or_register = JOptionPane.showOptionDialog(null, "Choose required operation.",
                 "Click a button",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         

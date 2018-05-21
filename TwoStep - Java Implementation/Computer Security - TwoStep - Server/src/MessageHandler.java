@@ -5,13 +5,19 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import Messages_New.*;
+import Messages.*;
 
 public class MessageHandler
 {
-	private static Server server;
-	
+	private static Server server;	
 	private DetailedSocket user_socket;
+	
+	public static final int QUIT = 0;
+	public static final int APPROVE_REGISTRATION_REQUEST = 1;
+	public static final int USERNAME_PASSWORD_INVALID = 2;	
+	public static final int PORTFOLIO = 3;
+	public static final int REGISTRATION_STATUS = 4;
+	public static final int LOGIN_STATUS = 5;
 	
 	public static void setServer(Server s)
 	{
@@ -39,16 +45,40 @@ public class MessageHandler
 		msg_receiver.start();
 	}
 	
-	public void sendMessage(Object msg)
+	public void sendMessage(int message_type, Object[] args)
 	{
-		try
+		if(message_type == APPROVE_REGISTRATION_REQUEST)
 		{
-			user_socket.writeObject(msg);
+			NewRegistrationMessage msg = new NewRegistrationMessage();
+			
+			try
+			{
+				user_socket.writeObject(msg);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+			}
 		}
-		catch(IOException e)
+		else if(message_type == PORTFOLIO)
 		{
-			System.err.println("Connection error!");
-			System.exit(1);
-		}		
+			PortfolioMessage msg = new PortfolioMessage();
+			msg.setPortfolio((ArrayList<ImageIcon>)(args[0]));
+			
+			try
+			{
+				user_socket.writeObject(msg);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+			}
+		}
+		else
+		{
+		
+		}
 	}
 }

@@ -32,5 +32,21 @@ public class Server extends Thread
 			catch(IOException e)
 			{}
 		}
+		
+		System.exit(1);
+	}
+	
+	public void setExit()
+	{
+		exit = true;
+		
+		try {
+			Server.server_socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.exit(1);
 	}
 }

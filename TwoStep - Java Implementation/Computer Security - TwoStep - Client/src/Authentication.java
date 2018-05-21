@@ -21,14 +21,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class Authentication extends JFrame implements ActionListener
-{
-	public static void main(String args[]) throws NumberFormatException, UnknownHostException, IOException
-	{
-		Authentication authentication = new Authentication();
-		authentication.doYourThing();
-		while( true ){}
-	}
-	
+{	
 	private static final long serialVersionUID = 2558098042977111L;
 
 	private static final int DEFAULT_NUM_OF_PORTFOLIO_STEPS = 0;
@@ -54,7 +47,7 @@ public class Authentication extends JFrame implements ActionListener
 		go_to_main_screen.addActionListener(this);
 	}
 	
-	private void doYourThing() throws NumberFormatException, UnknownHostException, IOException
+	public void doYourThing() throws NumberFormatException, UnknownHostException, IOException
 	{
 		JTextField host = new JTextField(15);
 		JTextField port = new JTextField(15);

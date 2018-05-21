@@ -33,7 +33,7 @@ public class Portfolio implements Serializable
 		        }
 		    };
 	private static final String IMAGES_FOLDER_PATH = "images/";
-	private static final String DEFAULT_IMAGES_FOLDER_NAME = "default";
+	private static final String DEFAULT_IMAGES_FOLDER_NAME = "default/";
 	
 	
 	private static HashMap<String,ImageIcon> default_images;
@@ -82,7 +82,7 @@ public class Portfolio implements Serializable
 		
 		Collections.shuffle(default_images_paths_arr);
 		for(int i=0;i<num_of_default_images;i++)
-			images_arr.add(default_images.get(default_images_paths_arr.get(i)));
+			images_arr.add(default_images.get(IMAGES_FOLDER_PATH + DEFAULT_IMAGES_FOLDER_NAME + default_images_paths_arr.get(i)));
 	}
 	
 	public void generateCustomPortfolio(ArrayList<ImageIcon> custom_images)

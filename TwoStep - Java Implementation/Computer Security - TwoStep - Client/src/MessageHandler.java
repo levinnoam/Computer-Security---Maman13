@@ -155,9 +155,11 @@ public class MessageHandler extends Thread
 		try
 		{
 			while( (obj = in.readObject()) != null )
-			{
+			{			
 				if (obj instanceof NewRegistrationMessage)
 				{
+					this.authentication.closeWaitDialog();
+					
 					JTextField username = new JTextField();
 					JTextField password = new JPasswordField();
 					Object[] message = {

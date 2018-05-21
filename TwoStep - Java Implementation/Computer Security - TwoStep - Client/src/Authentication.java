@@ -1,4 +1,6 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +28,7 @@ public class Authentication extends JFrame implements ActionListener
 
 	private static final int DEFAULT_NUM_OF_PORTFOLIO_STEPS = 0;
 	private static final int DEFAULT_NUM_OF_IMAGES_PER_PORTFOLIO = 4;
-	private static final int portfolio_window_size = 1000;
+	private static final int portfolio_window_size = 720;
 
 	
 	private MessageHandler msg_hndlr;
@@ -120,11 +122,23 @@ public class Authentication extends JFrame implements ActionListener
 		//Initialise with False for each image.
 		this.selected_images = new ArrayList<Boolean>(num_of_images_per_portfolio);
 		
-		setLayout(new GridLayout((int)Math.sqrt((double)num_of_images_per_portfolio),(int)Math.sqrt((double)num_of_images_per_portfolio)));
-		setSize(portfolio_window_size,portfolio_window_size);
+		JPanel img_panel = new JPanel();		
+		img_panel.setLayout(new GridLayout((int)Math.sqrt((double)num_of_images_per_portfolio),(int)Math.sqrt((double)num_of_images_per_portfolio)));
+		img_panel.setPreferredSize(new Dimension(portfolio_window_size,portfolio_window_size));
 		
 		for(ImageButton img : this.cur_portfolio)
-			add(img);
+			img_panel.add(img);
+		
+		JButton submit_selection_btn = new JButton("Submit!");
+		submit_selection_btn.setPreferredSize(new Dimension(portfolio_window_size,80));
+		
+		
+		this.setLayout(new BorderLayout());//new GridLayout(2,0));
+		
+		this.add(img_panel,BorderLayout.NORTH);
+		this.add(submit_selection_btn,BorderLayout.SOUTH);
+		//this.setSize(portfolio_window_size, portfolio_window_size);
+		this.pack();
 
 		setVisible(true);
 		
@@ -139,6 +153,11 @@ public class Authentication extends JFrame implements ActionListener
 		};
 		this.addWindowListener(exitListener);
 		
+	}
+	
+	public void closeWaitDialog()
+	{
+		wait.setVisible(false);
 	}
 	
 	@Override

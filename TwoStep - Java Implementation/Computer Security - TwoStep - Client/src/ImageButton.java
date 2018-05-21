@@ -14,12 +14,12 @@ public class ImageButton extends JButton
 	
 	private int img_number;
 	private boolean selected_f;
-	private static Border thickBorder = new LineBorder(Color.WHITE, 12);
+	private static Border thickBorder = new LineBorder(Color.RED, 12);
 	
 	public ImageButton(int size, ImageIcon img, int img_number)
 	{
-		Image scaled_img = img.getImage().getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
 		this.setSize(size, size);
+		Image scaled_img = img.getImage().getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
 		this.setIcon(new ImageIcon(scaled_img));
 		this.img_number = img_number;
 		this.selected_f = false;

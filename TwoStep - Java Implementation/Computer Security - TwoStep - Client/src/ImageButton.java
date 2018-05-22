@@ -2,9 +2,9 @@
 import java.awt.Color;
 import java.awt.Image;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -14,11 +14,14 @@ public class ImageButton extends JButton
 	
 	private int img_number;
 	private boolean selected_f;
-	private static Border thickBorder = new LineBorder(Color.RED, 12);
+	private static final Border thickBorder = new LineBorder(Color.RED, 12);
+	private static final Border defaultBorder = UIManager.getBorder("Button.border");;
 	
 	public ImageButton(int size, ImageIcon img, int img_number)
 	{
-		this.setSize(size, size);
+		super();
+		this.setBorder(defaultBorder);
+		this.setSize(size,size);
 		Image scaled_img = img.getImage().getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
 		this.setIcon(new ImageIcon(scaled_img));
 		this.img_number = img_number;
@@ -46,7 +49,7 @@ public class ImageButton extends JButton
 	public void deselectImage()
 	{
 		this.selected_f = false;
-		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setBorder(defaultBorder);
 	}
 	
 	public boolean isSelected()

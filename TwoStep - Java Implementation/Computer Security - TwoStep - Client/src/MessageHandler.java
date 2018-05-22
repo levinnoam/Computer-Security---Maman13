@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -123,7 +124,21 @@ public class MessageHandler extends Thread
 			}
 		}
 		else if (message_type == SELECTED_FOR_CUR_PORTFOLIO)
-		{}
+		{
+			PortfolioMessage msg = new PortfolioMessage();
+			msg.setSelectedImages((ArrayList<Boolean>)(args[0]));
+			
+			try
+			{
+				out.writeObject(msg);
+				out.flush();
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+			}
+		}
 		else if (message_type == REQUEST_COSTUM_PORTFOLIO)
 		{}
 		
@@ -156,6 +171,7 @@ public class MessageHandler extends Thread
 		{
 			while( (obj = in.readObject()) != null )
 			{			
+				//Registration process approved by server.
 				if (obj instanceof NewRegistrationMessage)
 				{
 					this.authentication.closeWaitDialog();

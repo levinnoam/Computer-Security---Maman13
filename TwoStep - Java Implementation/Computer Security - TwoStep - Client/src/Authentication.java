@@ -39,6 +39,8 @@ public class Authentication extends JFrame implements ActionListener
 	private JButton go_to_main_screen;
 	private JLabel wait = new JLabel("Please wait for response from the server");
 	
+	private JButton submit_selection_btn;
+	
 	public Authentication() 
 	{	
 		super("TwoStep Authentication");
@@ -129,8 +131,9 @@ public class Authentication extends JFrame implements ActionListener
 		for(ImageButton img : this.cur_portfolio)
 			img_panel.add(img);
 		
-		JButton submit_selection_btn = new JButton("Submit!");
+		submit_selection_btn = new JButton("Submit!");
 		submit_selection_btn.setPreferredSize(new Dimension(portfolio_window_size,80));
+		submit_selection_btn.addActionListener(this);
 		
 		
 		this.setLayout(new BorderLayout());//new GridLayout(2,0));
@@ -179,6 +182,11 @@ public class Authentication extends JFrame implements ActionListener
 				selected_images.set(button.getImageNumber()-1, true);
 			
 			button.repaint();
+		}
+		else if(obj == submit_selection_btn)
+		{
+			Object args[] = {selected_images};
+			this.msg_hndlr.sendMessage(MessageHandler.SELECTED_FOR_CUR_PORTFOLIO, args);
 		}
 /*		else if(obj == go_to_main_screen)
 		{

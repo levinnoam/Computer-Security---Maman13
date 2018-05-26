@@ -30,7 +30,6 @@ public class Main
 				String server_info = String.format("<html>hostname: %s<br/>port: %s</html>", InetAddress.getLocalHost(),port);
 				
 				JFrame frame = new JFrame();
-				//JOptionPane.showMessageDialog(null,server_info);
 				JLabel server_info_lbl = new JLabel(server_info);
 				JButton exit_btn = new JButton("Exit server");
 					

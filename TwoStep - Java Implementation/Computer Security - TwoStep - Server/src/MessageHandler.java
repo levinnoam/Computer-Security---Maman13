@@ -1,7 +1,6 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -45,6 +44,7 @@ public class MessageHandler
 		msg_receiver.start();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void sendMessage(int message_type, Object[] args)
 	{
 		if(message_type == APPROVE_REGISTRATION_REQUEST)

@@ -6,22 +6,22 @@ import Messages.*;
 
 public class MessageReceiver extends Thread
 {
-	private Server server;
+	//private Server server;
 	private DetailedSocket user_socket;
 	
 	private Registration registration;
-	private Portfolio login;
+	//private Login login;
 	
 	private boolean exit = false;
 	private MessageHandler m_h;
 	
 	public MessageReceiver(DetailedSocket current, Server server, MessageHandler m_h)
 	{
-		this.server = server;
+		//this.server = server;
 		this.user_socket = current;
 		
 		this.registration = null;
-		this.login = null;
+		//this.login = null;
 		
 		this.m_h = m_h;
 	}

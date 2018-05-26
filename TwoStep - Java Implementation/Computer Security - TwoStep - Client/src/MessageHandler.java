@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -62,6 +63,7 @@ public class MessageHandler extends Thread
 		this.authentication = authentication;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void sendMessage(int message_type, Object[] args)
 	{
 		if(message_type == QUIT)
@@ -140,7 +142,21 @@ public class MessageHandler extends Thread
 			}
 		}
 		else if (message_type == REQUEST_COSTUM_PORTFOLIO)
-		{}
+		{
+			CustomPortfolioRequestMessage msg = new CustomPortfolioRequestMessage();
+			msg.setUploadedImagesArr((ArrayList<ImageIcon>)(args[0]));
+			
+			try
+			{
+				out.writeObject(msg);
+				out.flush();
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+			}
+		}
 		
 	}
 	
@@ -201,22 +217,6 @@ public class MessageHandler extends Thread
 					if(!exit)
 						authentication.setPorfolio(msg.getPortfolio());
 				}
-				/*else if ( obj instanceof RequestIconMessage )
-				{
-					RequestIconMessage msg = (RequestIconMessage)obj;
-					if(msg.getIcon() == null)
-					{
-						JOptionPane.showMessageDialog(null, "Wait your turn!");
-					}
-					else if(!exit)
-						game.flipCard(msg.getCardNum(), msg.getIcon());
-				}
-				else if ( obj instanceof GameStatusMessage )
-				{
-					GameStatusMessage msg = (GameStatusMessage)obj;
-					if(!exit)
-						game.gameOver(msg.checkIfWon(),msg.getMyScore(),msg.getOpponentScore());
-				}*/
 			}
 		}
 		catch(IOException e)

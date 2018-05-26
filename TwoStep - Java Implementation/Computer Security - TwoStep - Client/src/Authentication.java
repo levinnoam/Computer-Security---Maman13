@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -51,7 +52,9 @@ public class Authentication extends JFrame implements ActionListener
 	private JFileChooser file_chooser;
 	private JFrame get_custom_images_frame;
 	private JPanel uploaded_files_panel;
+	private JPanel uploaded_files_btns_panel;
 	private JButton upload_img_btn;
+	private JButton send_uploaded_imgs_to_server;
 	private ArrayList<ImageIcon> cur_custom_files;
 
 	
@@ -79,10 +82,16 @@ public class Authentication extends JFrame implements ActionListener
 		
 		file_chooser = new JFileChooser();
 		
-		uploaded_files_panel = new JPanel(new GridLayout(0,1));
+		uploaded_files_panel = new JPanel();
+		BoxLayout layout = new BoxLayout(uploaded_files_panel, BoxLayout.PAGE_AXIS);
+		uploaded_files_panel.setLayout(layout);
 		uploaded_files_panel.setPreferredSize(new Dimension(portfolio_window_size,portfolio_window_size*4/5));
+		
+		uploaded_files_btns_panel = new JPanel(new GridLayout(1,2));
+		uploaded_files_btns_panel.setPreferredSize(new Dimension(portfolio_window_size,portfolio_window_size*1/5));
+		
 		upload_img_btn = new JButton("Upload Image");
-		upload_img_btn.setPreferredSize(new Dimension(portfolio_window_size,portfolio_window_size*1/5));
+		upload_img_btn.setPreferredSize(new Dimension(portfolio_window_size/2,portfolio_window_size*1/5));
 		upload_img_btn.addActionListener(new ActionListener()
 		{
 			@Override
@@ -93,40 +102,90 @@ public class Authentication extends JFrame implements ActionListener
 				if(obj == upload_img_btn)
 				{
 					JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(upload_img_btn);
-					int choice = file_chooser.showOpenDialog(frame);
-	
-					if (choice != JFileChooser.APPROVE_OPTION) return;
-	
-					File chosenFile = file_chooser.getSelectedFile();
 					
-					for (String ext : Authentication.img_extensions)
-					{
-						//TODO:: Do not allow duplicates.
-						if (chosenFile.getName().endsWith(ext))
+					//Too many images selected for a single portfolio.
+					if ( cur_custom_files.size() == num_of_images_per_portfolio )
+						JOptionPane.showMessageDialog(null, "Enough images already for a full portfolio!");
+					
+					else
+					{					
+						int choice = file_chooser.showOpenDialog(frame);
+		
+						if (choice != JFileChooser.APPROVE_OPTION) return;
+		
+						File chosenFile = file_chooser.getSelectedFile();
+						
+						for (String ext : Authentication.img_extensions)
 						{
-							cur_custom_files.add(new ImageIcon(chosenFile.getPath()));
-							JTextField text_field = new JTextField(chosenFile.getPath());
-							int text_field_width =  (int)(uploaded_files_panel.getSize().getWidth());
-							int text_field_height = (int)
-									((uploaded_files_panel.getSize().getHeight()) / num_of_images_per_portfolio);
-							text_field.setPreferredSize(new Dimension(text_field_width,text_field_height));
-							uploaded_files_panel.add(text_field);
-							//TODO:: Check if works.
-							uploaded_files_panel.repaint();
-							frame.repaint();
-							return;
-						}		
+							if (chosenFile.getName().endsWith(ext))
+							{
+								ImageIcon chosen_img = new ImageIcon(chosenFile.getPath());
+								//Do not allow duplicates.
+								if (cur_custom_files.contains(chosen_img))
+								{
+									JOptionPane.showMessageDialog(null, "No duplicates allowed!");
+									return;
+								}
+								cur_custom_files.add(chosen_img);
+								JTextField text_field = new JTextField(chosenFile.getPath());
+								int text_field_width =  (int)(uploaded_files_panel.getSize().getWidth());
+								int text_field_height = (int)
+										((uploaded_files_panel.getSize().getHeight()) / num_of_images_per_portfolio);
+								text_field.setPreferredSize(new Dimension(text_field_width,text_field_height));
+								text_field.setSize(text_field_width,text_field_height);
+								text_field.setMaximumSize(new Dimension(text_field_width,text_field_height));
+								uploaded_files_panel.add(text_field);
+								//TODO:: Check if works.
+								uploaded_files_panel.repaint();
+								frame.pack();
+								frame.repaint();
+								return;
+							}		
+						}
+						
+						JOptionPane.showMessageDialog(null, invalid_file_format_string);
 					}
-					JOptionPane.showMessageDialog(null, invalid_file_format_string);
+					
 					return;							
 				}
 			}
 		});
+		
+		send_uploaded_imgs_to_server = new JButton("Send Images!");
+		send_uploaded_imgs_to_server.setPreferredSize(new Dimension(portfolio_window_size/2,portfolio_window_size*1/5));
+		send_uploaded_imgs_to_server.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{		
+				Object obj = e.getSource();				
+				
+				if(obj == send_uploaded_imgs_to_server)
+				{
+					if (cur_custom_files.size() == 0)
+						JOptionPane.showMessageDialog(null, "No images uploaded!");
+					else
+					{
+						Object args[] = {cur_custom_files};
+			         	msg_hndlr.sendMessage(MessageHandler.REQUEST_COSTUM_PORTFOLIO, args);
+			         	
+						JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(upload_img_btn);
+						frame.setVisible(false);
+					}
+					
+					return;							
+				}
+			}
+		});
+		
+		uploaded_files_btns_panel.add(upload_img_btn);
+		uploaded_files_btns_panel.add(send_uploaded_imgs_to_server);
+		
 		get_custom_images_frame = new JFrame();
 		get_custom_images_frame.setSize(portfolio_window_size, portfolio_window_size);			
 		get_custom_images_frame.setLayout(new BorderLayout());
 		get_custom_images_frame.add(uploaded_files_panel, BorderLayout.NORTH);
-		get_custom_images_frame.add(upload_img_btn, BorderLayout.SOUTH);
+		get_custom_images_frame.add(uploaded_files_btns_panel, BorderLayout.SOUTH);
 		get_custom_images_frame.pack();
 		get_custom_images_frame.setVisible(false);	
 		

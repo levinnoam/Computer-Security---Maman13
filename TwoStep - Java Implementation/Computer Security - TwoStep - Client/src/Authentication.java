@@ -270,7 +270,9 @@ public class Authentication extends JFrame implements ActionListener
 			cur_portfolio.get(i).addActionListener(this);
 		}
 		//Initialise with False for each image.
-		this.selected_images = new ArrayList<Boolean>(num_of_images_per_portfolio);
+		this.selected_images = new ArrayList<Boolean>();
+		for(int i=0;i<num_of_images_per_portfolio;i++)
+			this.selected_images.add(false);
 		
 		JPanel img_panel = new JPanel();	
 		img_panel.setLayout(new GridLayout(num_of_lines_columns_in_img_panel,num_of_lines_columns_in_img_panel));

@@ -9,14 +9,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 import Messages.*;
 
 
-public class MessageHandler extends Thread
+public class MessageHandler
 {
 	public static final int QUIT = 0;
 	public static final int NEW_REGISTRATION = 1;
@@ -26,11 +23,8 @@ public class MessageHandler extends Thread
 	public static final int NEW_LOGIN = 5;
 	
 	private Socket socket;
-	private Authentication authentication;
 	private ObjectOutputStream out;
-	private ObjectInputStream in;
-	
-	private boolean exit = false;
+	private MessageReceiver msg_receiver;
 	
 	public MessageHandler(String hostname, int port, Authentication authentication) throws UnknownHostException, IOException
 	{
@@ -48,6 +42,9 @@ public class MessageHandler extends Thread
 			System.err.println("Could not create a connection on port: " + port);
 			System.exit(1);
 		}
+		
+		ObjectInputStream in = null;
+		
 		try
 		{
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -60,7 +57,14 @@ public class MessageHandler extends Thread
 			System.exit(1);
 		}
 		
-		this.authentication = authentication;
+		msg_receiver = new MessageReceiver(authentication, socket, in, this);
+		msg_receiver.start();
+	}
+	
+	public void closeOutputStream() throws IOException
+	{
+		out.close();
+		msg_receiver = null;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -73,12 +77,12 @@ public class MessageHandler extends Thread
 			try
 			{
 				out.writeObject(msg);
-				exit = true;
+				msg_receiver.setExit();
 			}
 			catch(IOException e)
 			{
 				System.err.println("Connection error!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 		}
 		else if(message_type == NEW_REGISTRATION)
@@ -94,17 +98,17 @@ public class MessageHandler extends Thread
 			catch(InvalidClassException e)
 			{
 				System.err.println("Invalid class!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 			catch(NotSerializableException e)
 			{
 				System.err.println("Not serializable!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 			catch(IOException e)
 			{
 				System.err.println("Connection error!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 			
 		}
@@ -122,7 +126,7 @@ public class MessageHandler extends Thread
 			catch(IOException e)
 			{
 				System.err.println("Connection error!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 		}
 		else if (message_type == SELECTED_FOR_CUR_PORTFOLIO)
@@ -138,7 +142,7 @@ public class MessageHandler extends Thread
 			catch(IOException e)
 			{
 				System.err.println("Connection error!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 		}
 		else if (message_type == REQUEST_COSTUM_PORTFOLIO)
@@ -154,80 +158,9 @@ public class MessageHandler extends Thread
 			catch(IOException e)
 			{
 				System.err.println("Connection error!");
-				System.exit(1);
+				msg_receiver.setExit();
 			}
 		}
 		
-	}
-	
-	public void run()
-	{
-		while(!exit)
-		{
-			try {
-				getMessage();
-			} catch (Exception e) {}
-		}
-		try
-		{
-			in.close();
-			out.close();
-			socket.close();
-			System.exit(0);
-		} catch (Exception e)
-		{
-			System.exit(1);
-		}
-	}
-	
-	public void getMessage() throws ClassNotFoundException, IOException
-	{
-		Object obj;
-		try
-		{
-			while( (obj = in.readObject()) != null )
-			{			
-				//Registration process approved by server.
-				if (obj instanceof NewRegistrationMessage)
-				{
-					this.authentication.closeWaitDialog();
-					
-					JTextField username = new JTextField();
-					JTextField password = new JPasswordField();
-					Object[] message = {
-					    "Username:", username,
-					    "Password:", password
-					};
-
-					int option = JOptionPane.showConfirmDialog(null, message, "Register", JOptionPane.OK_CANCEL_OPTION);
-					if (option == JOptionPane.OK_OPTION) 
-					{
-						Object args[] = {username.getText(), password.getText()};
-						this.sendMessage(MessageHandler.CHOOSE_USERNAME_PASSWORD, args);
-					} 
-					else 
-					{
-					    System.exit(1);
-					}					
-					
-				}
-				else if ( obj instanceof PortfolioMessage )
-				{
-					PortfolioMessage msg = (PortfolioMessage)obj;
-					if(!exit)
-						authentication.setPorfolio(msg.getPortfolio());
-				}
-			}
-		}
-		catch(IOException e)
-		{
-				System.err.println("Connection error!");
-				System.exit(1);
-		}
-		catch(ClassNotFoundException e)
-		{
-			System.err.println("Illegal message received!");
-		}
-
 	}
 }

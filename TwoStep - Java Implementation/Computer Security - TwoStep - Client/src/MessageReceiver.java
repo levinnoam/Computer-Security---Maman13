@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -83,6 +84,18 @@ public class MessageReceiver extends Thread
 					PortfolioMessage msg = (PortfolioMessage)obj;
 					if(!exit)
 						authentication.setPorfolio(msg.getPortfolio());
+				}
+				else if ( obj instanceof RegistrationStatusMessage )
+				{
+					RegistrationStatusMessage msg = (RegistrationStatusMessage)obj;
+					if(msg.getRegistrationStatus() == true)
+						authentication.currentAuthenticationDone();
+					else
+					{
+						ArrayList<Exception> registration_exceptions = msg.getRegistrationExceptions();
+						System.err.println("Registration Failed!\n"+registration_exceptions.toString());
+						authentication.currentAuthenticationDone();
+					}
 				}
 			}
 		}

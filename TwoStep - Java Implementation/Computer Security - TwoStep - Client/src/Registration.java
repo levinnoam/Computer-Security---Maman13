@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class Registration extends JFrame implements ActionListener
@@ -31,12 +33,12 @@ public class Registration extends JFrame implements ActionListener
 	private static String invalid_file_format_string; 
 	
 	private MessageHandler msg_hndlr;
+	private Authentication authentication;
 	
 	private int num_of_images_per_portfolio = 0;
 	private ArrayList<ImageButton> cur_portfolio = null;
 	private ArrayList<Boolean> selected_images = null;
 	private JButton go_to_main_screen;
-	private JFrame main_window;
 	
 	private JButton submit_selection_btn;
 	private JButton request_custom_portfolio;
@@ -52,12 +54,12 @@ public class Registration extends JFrame implements ActionListener
 	private ArrayList<ImageIcon> cur_custom_files;
 
 	
-	public Registration(JFrame main_window, int num_of_portfolios, int images_per_portfolio, MessageHandler msg_hndlr) 
+	public Registration(Authentication authentication, int num_of_portfolios, int images_per_portfolio, MessageHandler msg_hndlr) 
 	{	
 		super("Registration");
 		this.msg_hndlr = msg_hndlr;
 		this.num_of_images_per_portfolio = images_per_portfolio;
-		this.main_window = main_window;
+		this.authentication = authentication;
 		
 		go_to_main_screen = new JButton("Go to main screen?");
 		go_to_main_screen.setBackground(Color.GREEN);
@@ -199,8 +201,6 @@ public class Registration extends JFrame implements ActionListener
 	
 	public void setPorfolio(ArrayList<ImageIcon> images_arr)
 	{
-		//SwingUtilities.getWindowAncestor(wait).setVisible(false);
-		main_window.setVisible(false);
 		this.num_of_images_per_portfolio = images_arr.size();
 		int num_of_lines_columns_in_img_panel = (int)(Math.ceil(Math.sqrt((double)num_of_images_per_portfolio)));
 		int img_size = Registration.portfolio_window_size / num_of_lines_columns_in_img_panel;
@@ -230,6 +230,7 @@ public class Registration extends JFrame implements ActionListener
 		this.add(portfolio_buttons_panel,BorderLayout.SOUTH);
 		//this.setSize(portfolio_window_size, portfolio_window_size);
 		this.pack();
+		this.repaint();
 
 		setVisible(true);
 		
@@ -243,7 +244,6 @@ public class Registration extends JFrame implements ActionListener
 			}
 		};
 		this.addWindowListener(exitListener);
-		
 	}
 	
 	public void requestCustomPortfolio()
@@ -292,6 +292,14 @@ public class Registration extends JFrame implements ActionListener
 	     	JOptionPane.showMessageDialog(null, wait);
 		}*/
 		
+	}
+	
+	public void goToMainScreen() throws NumberFormatException, UnknownHostException, IOException
+	{
+		setVisible(false);
+		getContentPane().removeAll();
+
+     	authentication.doYourThing();
 	}
 
 }

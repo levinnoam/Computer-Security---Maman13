@@ -104,7 +104,17 @@ public class Authentication extends JFrame
 			registration.setPorfolio(images_arr);
 		else if (login != null)
 		{
-			//login.setPorfolio(images_arr);
+			//TODO login.setPorfolio(images_arr);
+		}
+	}
+	
+	public void currentAuthenticationDone() throws NumberFormatException, UnknownHostException, IOException
+	{
+		if (registration != null)
+			registration.goToMainScreen();
+		else if (login != null)
+		{
+			//TODO
 		}
 	}
 }

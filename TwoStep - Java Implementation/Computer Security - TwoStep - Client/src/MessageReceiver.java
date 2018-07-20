@@ -101,7 +101,44 @@ public class MessageReceiver extends Thread
 					else
 					{
 						ArrayList<Exception> registration_exceptions = msg.getRegistrationExceptions();
-						System.err.println("Registration Failed!\n"+registration_exceptions.toString());
+						JOptionPane.showMessageDialog(null, "Registration Failed!\n"+registration_exceptions.toString());
+						authentication.currentAuthenticationDone();
+					}
+				}
+				else if ( obj instanceof LoginRequestMessage )
+				{
+					this.authentication.closeWaitDialog();
+					
+					JTextField username = new JTextField();
+					JTextField password = new JPasswordField();
+					Object[] message = {
+					    "Username:", username,
+					    "Password:", password
+					};
+
+					int option = JOptionPane.showConfirmDialog(null, message, "Register", JOptionPane.OK_CANCEL_OPTION);
+					if (option == JOptionPane.OK_OPTION) 
+					{
+						Object args[] = {username.getText(), password.getText()};
+						m_h.sendMessage(MessageHandler.CHOOSE_USERNAME_PASSWORD, args);
+					} 
+					else 
+					{
+					    System.exit(1);
+					}		
+				}
+				else if ( obj instanceof LoginStatusMessage )
+				{
+					LoginStatusMessage msg = (LoginStatusMessage)obj;
+					if(msg.getLoginStatus() == true)
+					{
+						JOptionPane.showMessageDialog(null, "Access Approved!");
+						authentication.currentAuthenticationDone();						
+					}
+					else
+					{
+						String failure_str = msg.toString();
+						JOptionPane.showMessageDialog(null, "Access Denied!" + failure_str);
 						authentication.currentAuthenticationDone();
 					}
 				}

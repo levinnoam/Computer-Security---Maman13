@@ -109,7 +109,7 @@ public class Authentication extends JFrame
 			registration.setPorfolio(images_arr);
 		else if (login != null)
 		{
-			//TODO login.setPorfolio(images_arr);
+			login.setPorfolio(images_arr);
 		}
 	}
 	
@@ -119,7 +119,7 @@ public class Authentication extends JFrame
 			registration.goToMainScreen();
 		else if (login != null)
 		{
-			//TODO
+			login.goToMainScreen();
 		}
 	}
 }

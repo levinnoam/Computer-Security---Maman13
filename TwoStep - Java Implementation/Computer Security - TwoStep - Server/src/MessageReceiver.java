@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Messages.*;
 
@@ -55,8 +56,17 @@ public class MessageReceiver extends Thread
 					UsernamePasswordMessage msg = (UsernamePasswordMessage)obj;
 					registration.receiveUsernamePassword(msg.getUsername(), msg.getPassword());
 				}
+				
+				else if ( obj instanceof PortfolioMessage && registration != null)
+				{
+					
+					PortfolioMessage msg = (PortfolioMessage)obj;
+					registration.receivePortfolio(msg.getSelectedImages());
+				}
+				
 				else
-				{}
+				{
+				}
 			}
 		}
 		catch(IOException e)

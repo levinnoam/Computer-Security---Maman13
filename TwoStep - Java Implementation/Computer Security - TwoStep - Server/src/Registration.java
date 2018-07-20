@@ -64,12 +64,26 @@ public class Registration
 		
 		sendDefaultPortfolio();
 	}
+	
+	/*
 	public void receivePortfolio(Portfolio portfolio)
 	{
 		if(portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
 		{
 			user.addPortfolio(portfolio);
 			this.cur_portfolios_received++;
+		}
+	}*/
+	
+	public void receivePortfolio(ArrayList<Boolean> selected_images)
+	{
+		cur_portfolio.setSelectedInPortfolio(selected_images);
+		if(this.cur_portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
+		{
+			user.addPortfolio(cur_portfolio);
+			this.cur_portfolios_received++;
+			sendDefaultPortfolio();
+
 		}
 	}
 

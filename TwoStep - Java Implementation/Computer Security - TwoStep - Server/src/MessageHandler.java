@@ -17,6 +17,8 @@ public class MessageHandler
 	public static final int PORTFOLIO = 3;
 	public static final int REGISTRATION_STATUS = 4;
 	public static final int LOGIN_STATUS = 5;
+	public static final int APPROVE_LOGIN_REQUEST = 6;
+
 	
 	public static void setServer(Server s)
 	{
@@ -100,5 +102,22 @@ public class MessageHandler
 				//TODO:: Don't exit. Close user_socket and MessageReceiver.
 			}
 		}
+		
+		else if(message_type == APPROVE_LOGIN_REQUEST)
+		{
+			LoginRequestMessage msg = new LoginRequestMessage();
+
+			try
+			{
+				user_socket.writeObject(msg);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+				//TODO:: Don't exit. Close user_socket and MessageReceiver.
+			}
+		}
+		
 	}
 }

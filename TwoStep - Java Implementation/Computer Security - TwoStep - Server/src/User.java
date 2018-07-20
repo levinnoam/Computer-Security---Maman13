@@ -33,6 +33,7 @@ public class User implements Serializable
 	public void setPortfolios(ArrayList<Portfolio> portfolios) {
 		this.portfolios = portfolios;
 	}
+	
 	public void addPortfolio(Portfolio portfolio)
 	{
 		System.out.println("test_user"); 

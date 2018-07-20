@@ -10,6 +10,7 @@ public class MessageReceiver extends Thread
 	private DetailedSocket user_socket;
 	
 	private Registration registration;
+	private Login login; 
 	//private Login login;
 	
 	private boolean exit = false;
@@ -21,8 +22,7 @@ public class MessageReceiver extends Thread
 		this.user_socket = current;
 		
 		this.registration = null;
-		//this.login = null;
-		
+		this.login = null;
 		this.m_h = m_h;
 	}
 	
@@ -65,6 +65,20 @@ public class MessageReceiver extends Thread
 					PortfolioMessage msg = (PortfolioMessage)obj;
 					registration.receivePortfolio(msg.getSelectedImages());
 				}
+				
+				else if ( obj instanceof LoginRequestMessage )
+				{					
+					LoginRequestMessage msg = (LoginRequestMessage)obj;
+					login = new Login(); //TODO: add login parameters 	
+				}
+				
+				else if ( obj instanceof UsernamePasswordMessage && login != null)
+				{
+					UsernamePasswordMessage msg = (UsernamePasswordMessage)obj;
+					login.receiveUsernamePassword(msg.getUsername(), msg.getPassword());
+				}
+				
+				
 				
 				else if ( obj instanceof RegistrationStatusMessage && registration != null)
 				{

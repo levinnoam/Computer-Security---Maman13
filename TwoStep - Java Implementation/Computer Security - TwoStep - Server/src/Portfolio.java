@@ -128,6 +128,11 @@ public class Portfolio implements Serializable
 		this.selected_images = selected;
 	}
 	
+	public ArrayList<Boolean>  getSelectedImages()
+	{
+		return this.selected_images; 
+	}
+	
 	public boolean checkIfAnySelected()
 	{
 		return this.selected_images.contains(true);

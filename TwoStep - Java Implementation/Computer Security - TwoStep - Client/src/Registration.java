@@ -201,6 +201,7 @@ public class Registration extends JFrame implements ActionListener
 	
 	public void setPorfolio(ArrayList<ImageIcon> images_arr)
 	{
+		this.getContentPane().removeAll();
 		this.num_of_images_per_portfolio = images_arr.size();
 		int num_of_lines_columns_in_img_panel = (int)(Math.ceil(Math.sqrt((double)num_of_images_per_portfolio)));
 		int img_size = Registration.portfolio_window_size / num_of_lines_columns_in_img_panel;

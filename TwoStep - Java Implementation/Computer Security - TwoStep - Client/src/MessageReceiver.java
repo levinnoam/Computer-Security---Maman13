@@ -32,17 +32,22 @@ public class MessageReceiver extends Thread
 	{
 		while(!exit)
 		{
-			try {
+			try 
+			{
 				getMessage();
-			} catch (Exception e) {}
+			} catch (Exception e) 
+			{
+				System.exit(1);
+			}
 		}
+		
 		try
 		{
-			in.close();
 			m_h.closeOutputStream();
 			socket.close();
 			System.exit(0);
-		} catch (Exception e)
+		} 
+		catch (Exception e)
 		{
 			System.exit(1);
 		}
@@ -114,5 +119,13 @@ public class MessageReceiver extends Thread
 	public void setExit()
 	{
 		exit = true;
+		try 
+		{
+			in.close();
+		} 
+		catch (Exception e)
+		{
+			System.exit(1);
+		}
 	}
 }

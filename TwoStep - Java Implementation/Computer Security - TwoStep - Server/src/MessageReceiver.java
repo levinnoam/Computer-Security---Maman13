@@ -12,7 +12,7 @@ public class MessageReceiver extends Thread
 	private Registration registration;
 	private Login login; 
 	//private Login login;
-	
+	private boolean login_enabled = false; 
 	private boolean exit = false;
 	private MessageHandler m_h;
 	
@@ -66,18 +66,17 @@ public class MessageReceiver extends Thread
 					registration.receivePortfolio(msg.getSelectedImages());
 				}
 				
-				else if ( obj instanceof LoginRequestMessage )
+				else if ( obj instanceof LoginRequestMessage && registration == null )
 				{					
-					LoginRequestMessage msg = (LoginRequestMessage)obj;
-					login = new Login(); //TODO: add login parameters 	
+					login_enabled = true;
+					m_h.sendMessage(MessageHandler.APPROVE_LOGIN_REQUEST, null);
 				}
 				
-				else if ( obj instanceof UsernamePasswordMessage && login != null)
+				else if ( obj instanceof UsernamePasswordMessage && login_enabled )
 				{
 					UsernamePasswordMessage msg = (UsernamePasswordMessage)obj;
 					login.receiveUsernamePassword(msg.getUsername(), msg.getPassword());
 				}
-				
 				
 				
 				else if ( obj instanceof RegistrationStatusMessage && registration != null)

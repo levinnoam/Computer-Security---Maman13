@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -32,7 +31,6 @@ public class Login extends JFrame implements ActionListener
 	private int num_of_images_per_portfolio = 0;
 	private ArrayList<ImageButton> cur_portfolio = null;
 	private ArrayList<Boolean> selected_images = null;
-	private JButton go_to_main_screen;
 	
 	private JButton submit_selection_btn;
 	private JPanel portfolio_buttons_panel;
@@ -43,11 +41,6 @@ public class Login extends JFrame implements ActionListener
 		super("Login");
 		this.msg_hndlr = msg_hndlr;
 		this.authentication = authentication;
-		
-		go_to_main_screen = new JButton("Go to main screen?");
-		go_to_main_screen.setBackground(Color.GREEN);
-		go_to_main_screen.setSize(100,100);
-		go_to_main_screen.addActionListener(this);
 		
 		submit_selection_btn = new JButton("Submit!");
 		submit_selection_btn.setPreferredSize(new Dimension(portfolio_window_size/2,80));
@@ -141,16 +134,6 @@ public class Login extends JFrame implements ActionListener
 			Object args[] = {selected_images};
 			this.msg_hndlr.sendMessage(MessageHandler.SELECTED_FOR_CUR_PORTFOLIO, args);
 		}
-/*		else if(obj == go_to_main_screen)
-		{
-			setVisible(false);
-			getContentPane().removeAll();
-			String size = JOptionPane.showInputDialog("Enter board size(Optional. Default value: 4x4):");
-			
-			Object args[] = {(size==null)?(DEFAULT_NUM_OF_IMAGES_PER_PORTFOLIO):(Integer.parseInt(size))};
-	     	msg_hndlr.sendMessage(MessageHandler.NEW_GAME, args);
-	     	JOptionPane.showMessageDialog(null, wait);
-		}*/
 		
 	}
 	

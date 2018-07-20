@@ -116,7 +116,7 @@ public class MessageReceiver extends Thread
 					    "Password:", password
 					};
 
-					int option = JOptionPane.showConfirmDialog(null, message, "Register", JOptionPane.OK_CANCEL_OPTION);
+					int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
 					if (option == JOptionPane.OK_OPTION) 
 					{
 						Object args[] = {username.getText(), password.getText()};

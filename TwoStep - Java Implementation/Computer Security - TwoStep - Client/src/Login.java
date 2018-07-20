@@ -58,7 +58,7 @@ public class Login extends JFrame implements ActionListener
 		invalid_file_format_string = invalid_file_format_string + "</html>";
 		
      	//Request to start login
-     	msg_hndlr.sendMessage(MessageHandler.NEW_LOGIN, null);
+     	msg_hndlr.sendMessage(MessageHandler.NEW_LOGIN, null); 	
 	}
 	
 	public void setPorfolio(ArrayList<ImageIcon> images_arr)
@@ -124,8 +124,10 @@ public class Login extends JFrame implements ActionListener
 				selected_images.set(button.getImageNumber()-1, false);
 			}
 			else
+			{
 				button.selectImage();
 				selected_images.set(button.getImageNumber()-1, true);
+			}
 			
 			button.repaint();
 		}

@@ -10,7 +10,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-public class Portfolio implements Serializable
+public class Portfolio implements Serializable, java.lang.Cloneable
 {
 	private static final long serialVersionUID = 8505718346103168771L;
 
@@ -45,7 +45,7 @@ public class Portfolio implements Serializable
 	private ArrayList<Boolean> selected_images;
 	
 	
-	public Portfolio(int portfolio_size, MessageHandler m_h)
+	public Portfolio(int portfolio_size)
 	{
 		this.portfolio_size = portfolio_size;
 		
@@ -68,6 +68,15 @@ public class Portfolio implements Serializable
 
 		images_arr = null;
 		selected_images = null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Object clone() throws CloneNotSupportedException 
+	{
+		Portfolio cloned_portfolio = new Portfolio(this.portfolio_size);
+		cloned_portfolio.setImagesInPortfolio((ArrayList<ImageIcon>)(this.getPortfolioImages().clone()));
+		cloned_portfolio.setSelectedInPortfolio((ArrayList<Boolean>)(this.getSelectedImages().clone()));
+		return cloned_portfolio;
 	}
 	
 	public void sendPortfolioMessage()
@@ -109,14 +118,18 @@ public class Portfolio implements Serializable
 			
 	}
 	
+	public int getPortfolioSize()
+	{
+		return this.portfolio_size;
+	}
+	
 	public void shufflePortfolio()
 	{
 		long seed = System.nanoTime();
 		//Using the same seed will assure the lists be the shuffled exactly the same way.
-		Random rand = new Random(seed);
-		Collections.shuffle(images_arr, rand);
+		Collections.shuffle(images_arr, new Random(seed));
 		if (selected_images != null)
-			Collections.shuffle(selected_images, rand);
+			Collections.shuffle(selected_images, new Random(seed));
 	}
 	
 	public void setImagesInPortfolio(ArrayList<ImageIcon> images)

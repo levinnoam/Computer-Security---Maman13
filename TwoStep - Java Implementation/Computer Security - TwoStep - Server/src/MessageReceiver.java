@@ -66,6 +66,12 @@ public class MessageReceiver extends Thread
 					registration.receivePortfolio(msg.getSelectedImages());
 				}
 				
+				else if ( obj instanceof PortfolioMessage && login != null)
+				{
+					PortfolioMessage msg = (PortfolioMessage)obj;
+					login.receivePortfolio(msg.getSelectedImages());
+				}
+				
 				else if ( obj instanceof LoginRequestMessage && registration == null )
 				{					
 					login_enabled = true;
@@ -75,7 +81,15 @@ public class MessageReceiver extends Thread
 				else if ( obj instanceof UsernamePasswordMessage && login_enabled )
 				{
 					UsernamePasswordMessage msg = (UsernamePasswordMessage)obj;
-					login.receiveUsernamePassword(msg.getUsername(), msg.getPassword());
+					login = new Login(this.m_h);
+					if (!login.setUser(msg.getUsername()))
+						login.sendLoginFailed("User Doesn't Exist!");
+					else
+					{
+						login.checkPassword(msg.getPassword());
+						//Send first portfolio.
+						login.sendUserPortfolio(0);	
+					}
 				}
 				
 				

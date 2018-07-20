@@ -30,14 +30,24 @@ public class User implements Serializable
 	public ArrayList<Portfolio> getPortfolios() {
 		return portfolios;
 	}
+	
+	public int getPortfolioSize()
+	{
+		if (!portfolios.isEmpty())
+			return (portfolios.get(0)).getPortfolioSize();
+		
+		return 0;
+	}
+	public int getNumOfPortfolios()
+	{
+		return portfolios.size();
+	}
 	public void setPortfolios(ArrayList<Portfolio> portfolios) {
 		this.portfolios = portfolios;
 	}
 	
 	public void addPortfolio(Portfolio portfolio)
 	{
-		System.out.println("test_user"); 
 		this.portfolios.add(portfolio);
-		System.out.println("test_user2"); 
 	}
 }

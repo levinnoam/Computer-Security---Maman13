@@ -103,10 +103,33 @@ public class MessageHandler
 			}
 		}
 		
-		else if(message_type == APPROVE_LOGIN_REQUEST)
+		else if (message_type == APPROVE_LOGIN_REQUEST)
 		{
 			LoginRequestMessage msg = new LoginRequestMessage();
 
+			try
+			{
+				user_socket.writeObject(msg);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+				//TODO:: Don't exit. Close user_socket and MessageReceiver.
+			}
+		}
+		else if (message_type == LOGIN_STATUS)
+		{
+			LoginStatusMessage msg = new LoginStatusMessage();
+			
+			Boolean login_succesful = (Boolean)(args[0]);
+			msg.setLoginStatus(login_succesful);
+			
+			if (!login_succesful)
+			{
+				msg.setLoginStatusString((String)(args[1]));
+			}
+			
 			try
 			{
 				user_socket.writeObject(msg);

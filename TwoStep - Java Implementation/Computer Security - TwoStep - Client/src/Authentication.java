@@ -86,7 +86,7 @@ public class Authentication extends JFrame
         else if (login_or_register == 0)
         {
         	registration = null;
-        	//login = new...
+        	login = new Login(this, msg_hndlr);
         }  	
         else
         {
@@ -101,6 +101,7 @@ public class Authentication extends JFrame
 	{
 		wait.setVisible(false);
 		SwingUtilities.getWindowAncestor(wait).setVisible(false);
+		this.setVisible(false);
 	}
 	
 	public void setPorfolio(ArrayList<ImageIcon> images_arr)

@@ -33,7 +33,7 @@ public class Registration
 				this.num_of_portfolios > 0 && this.num_of_portfolios < MAX_NUM_OF_PORTFOLIOS)
 		{
 			user = new User();
-			cur_portfolio = new Portfolio(this.portfolio_size, this.msg_hndlr);
+			cur_portfolio = new Portfolio(this.portfolio_size);
 			msg_hndlr.sendMessage(MessageHandler.APPROVE_REGISTRATION_REQUEST, null);
 		}
 		else
@@ -92,15 +92,17 @@ public class Registration
 		}
 	}*/
 	
-	public void receivePortfolio(ArrayList<Boolean> selected_images)
+	public void receivePortfolio(ArrayList<Boolean> selected_images) throws CloneNotSupportedException
 	{
 		cur_portfolio.setSelectedInPortfolio(selected_images);
 		if(this.cur_portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
 		{	
-			user.addPortfolio(cur_portfolio);
+			user.addPortfolio((Portfolio)(cur_portfolio.clone()));
 			
-			this.cur_portfolios_received++;			
-			sendDefaultPortfolio();			
+			this.cur_portfolios_received++;		
+			
+			if (this.cur_portfolios_received < this.num_of_portfolios)
+				sendDefaultPortfolio();			
 		}
 		else if (!this.cur_portfolio.checkIfAnySelected())
 		{
@@ -116,7 +118,8 @@ public class Registration
 	}
 	public void writeUserFile(){
 		String username_path = USER_AUTHENTICATION_PATH + user.getUsername(); 
-		try {
+		try 
+		{
 			File userfile = new File(username_path);
 			userfile.getParentFile().mkdirs(); 
 			userfile.createNewFile(); 
@@ -127,7 +130,8 @@ public class Registration
 			oos.writeObject(this.user);
 			oos.close();
 			fos.close();
-		} catch (IOException e) {
+		} catch (IOException e) 
+		{
 			e.printStackTrace();
 		} 
 		//TODO: don't send sucessful message if failed 

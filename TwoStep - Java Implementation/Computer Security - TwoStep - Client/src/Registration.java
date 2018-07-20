@@ -260,8 +260,10 @@ public class Registration extends JFrame implements ActionListener
 				selected_images.set(button.getImageNumber()-1, false);
 			}
 			else
+			{
 				button.selectImage();
 				selected_images.set(button.getImageNumber()-1, true);
+			}
 			
 			button.repaint();
 		}

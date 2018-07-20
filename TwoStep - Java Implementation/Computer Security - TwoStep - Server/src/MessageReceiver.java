@@ -1,3 +1,7 @@
+/*
+ * Noam Levin 	- 	308334424
+ * Kfir Fleischer - 311601140
+ */
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;

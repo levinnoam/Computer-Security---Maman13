@@ -1,3 +1,8 @@
+/*
+ * Noam Levin 	- 	308334424
+ * Kfir Fleischer - 311601140
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;

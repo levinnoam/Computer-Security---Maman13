@@ -1,3 +1,8 @@
+/*
+ * Noam Levin 	- 	308334424
+ * Kfir Fleischer - 311601140
+ */
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,3 +1,7 @@
+/*
+ * Noam Levin 	- 	308334424
+ * Kfir Fleischer - 311601140
+ */
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,8 +44,11 @@ public class Registration
 		else
 		{
 			user = null;
+			Boolean reg_stat = false;
 			Exception e = new Exception("Invalid portfolio size/num of portfolios!");
-			Object args[] = {e};
+			ArrayList<Exception> exc = new ArrayList<Exception>();
+			exc.add(e);
+			Object args[] = {reg_stat, e};
 			msg_hndlr.sendMessage(MessageHandler.REGISTRATION_STATUS, args);
 		}
 	}
@@ -76,11 +83,26 @@ public class Registration
 	
 	public void receiveUsernamePassword(String username, String password) throws NoSuchAlgorithmException
 	{
-		user.setUsername(username);
-		user.setPassword(password);
-		//TODO::user.checkValidity
-			
-		sendDefaultPortfolio();
+		String username_path = USER_AUTHENTICATION_PATH + username; 
+		File userfile = new File(username_path);
+		if(userfile.exists() && !userfile.isDirectory())
+		{
+			user = null;
+			Exception e = new Exception("User already exists!");
+			ArrayList<Exception> exc = new ArrayList<Exception>();
+			exc.add(e);
+			Boolean reg_stat = false;
+			Object args[] = {reg_stat, exc};
+			msg_hndlr.sendMessage(MessageHandler.REGISTRATION_STATUS, args);
+		}
+		else
+		{			
+			user.setUsername(username);
+			user.setPassword(password);
+			//TODO::user.checkValidity
+				
+			sendDefaultPortfolio();
+		}
 	}
 	
 	public void receivePortfolio(ArrayList<Boolean> selected_images) throws CloneNotSupportedException

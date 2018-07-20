@@ -1,3 +1,8 @@
+/*
+ * Noam Levin 	- 	308334424
+ * Kfir Fleischer - 311601140
+ */
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

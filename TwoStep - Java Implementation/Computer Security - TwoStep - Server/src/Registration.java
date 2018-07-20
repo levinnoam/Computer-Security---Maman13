@@ -1,4 +1,7 @@
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -61,7 +64,7 @@ public class Registration
 		user.setUsername(username);
 		user.setPassword(password);
 		//TODO::user.checkValidity
-		
+			
 		sendDefaultPortfolio();
 	}
 	
@@ -79,11 +82,29 @@ public class Registration
 	{
 		cur_portfolio.setSelectedInPortfolio(selected_images);
 		if(this.cur_portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
-		{
+		{	
+			System.out.println("test");
 			user.addPortfolio(cur_portfolio);
-			this.cur_portfolios_received++;
+			
+			this.cur_portfolios_received++;			
 			sendDefaultPortfolio();
+			System.out.println("test2");
+			
+		}
+	}
+	public void writeUserFile(){
 
+		try {
+			FileOutputStream fos = new FileOutputStream("userObject.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			// write object to file
+			oos.writeObject(this.user);
+			System.out.println("Done");
+			// closing resources
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

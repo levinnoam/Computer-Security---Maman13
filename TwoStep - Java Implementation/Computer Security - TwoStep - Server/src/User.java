@@ -9,6 +9,12 @@ public class User implements Serializable
 	private String username;
 	private String password;
 	private ArrayList<Portfolio> portfolios;
+
+	public User()
+	{
+		portfolios = new ArrayList<Portfolio>();
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -29,6 +35,8 @@ public class User implements Serializable
 	}
 	public void addPortfolio(Portfolio portfolio)
 	{
+		System.out.println("test_user"); 
 		this.portfolios.add(portfolio);
+		System.out.println("test_user2"); 
 	}
 }

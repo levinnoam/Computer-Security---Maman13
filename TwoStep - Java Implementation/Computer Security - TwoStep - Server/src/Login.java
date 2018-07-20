@@ -71,7 +71,7 @@ public class Login
 	
 	public void checkPassword(String password)
 	{
-		success = (user.getPassword().compareTo(password) == 0);
+		success = (user.getPassword().compareTo(user.performHash(password + user.getSalt())) == 0);
 	}
 	
 	public void receivePortfolio(ArrayList<Boolean> selected_images)

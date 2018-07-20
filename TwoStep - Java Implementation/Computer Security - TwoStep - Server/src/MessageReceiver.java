@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import Messages.*;
 
@@ -40,7 +41,7 @@ public class MessageReceiver extends Thread
 		} catch (IOException e) {}
 	}
 	
-	public void getMessage() throws ClassNotFoundException, IOException, CloneNotSupportedException
+	public void getMessage() throws ClassNotFoundException, IOException, CloneNotSupportedException, NoSuchAlgorithmException
 	{
 		Object obj;
 		try
@@ -90,12 +91,17 @@ public class MessageReceiver extends Thread
 						//Send first portfolio.
 						login.sendUserPortfolio(0);	
 					}
-				}
-				
+				}				
 				
 				else if ( obj instanceof RegistrationStatusMessage && registration != null)
 				{
 					exit = true;
+				}
+				
+				else if ( obj instanceof CustomPortfolioRequestMessage )
+				{
+					CustomPortfolioRequestMessage msg = (CustomPortfolioRequestMessage)obj;
+					registration.sendCustomPortfolio(msg.getUploadedImagesArr());
 				}
 			}
 		}

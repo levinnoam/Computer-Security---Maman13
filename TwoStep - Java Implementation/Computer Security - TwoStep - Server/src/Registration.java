@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -21,7 +22,7 @@ public class Registration
 	private User user;
 	private Portfolio cur_portfolio;
 	
-	public Registration(int num_of_portfolios, int num_of_images_per_portfolio, MessageHandler m_h)
+	public Registration(int num_of_portfolios, int num_of_images_per_portfolio, MessageHandler m_h) throws NoSuchAlgorithmException
 	{
 		this.msg_hndlr = m_h;
 		this.portfolio_size = num_of_images_per_portfolio;
@@ -73,7 +74,7 @@ public class Registration
 		msg_hndlr.sendMessage(MessageHandler.PORTFOLIO, args);
 	}
 	
-	public void receiveUsernamePassword(String username, String password)
+	public void receiveUsernamePassword(String username, String password) throws NoSuchAlgorithmException
 	{
 		user.setUsername(username);
 		user.setPassword(password);
@@ -81,16 +82,6 @@ public class Registration
 			
 		sendDefaultPortfolio();
 	}
-	
-	/*
-	public void receivePortfolio(Portfolio portfolio)
-	{
-		if(portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
-		{
-			user.addPortfolio(portfolio);
-			this.cur_portfolios_received++;
-		}
-	}*/
 	
 	public void receivePortfolio(ArrayList<Boolean> selected_images) throws CloneNotSupportedException
 	{
@@ -116,6 +107,7 @@ public class Registration
 			sendRegistrationDoneSuccesfully();
 		}
 	}
+	
 	public void writeUserFile(){
 		String username_path = USER_AUTHENTICATION_PATH + user.getUsername(); 
 		try 

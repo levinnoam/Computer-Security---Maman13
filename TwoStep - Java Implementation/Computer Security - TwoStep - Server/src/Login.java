@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Login
 {
-	private static final String USER_AUTHENTICATION_PATH = "../userDetails/";
+	private static final String USER_AUTHENTICATION_PATH = "userDetails/";
 	private int num_of_portfolios;
 	private Boolean success = false; 
 	private int cur_portfolios_received;

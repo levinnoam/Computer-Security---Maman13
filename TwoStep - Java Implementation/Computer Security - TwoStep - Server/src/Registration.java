@@ -12,7 +12,7 @@ public class Registration
 {
 	private static final int MAX_PORTFOLIO_SIZE = 100;
 	private static final int MAX_NUM_OF_PORTFOLIOS = 5;
-	private static final String USER_AUTHENTICATION_PATH = "../userDetails/";
+	private static final String USER_AUTHENTICATION_PATH = "userDetails/";
 	private int portfolio_size;
 	private int num_of_portfolios;
 	

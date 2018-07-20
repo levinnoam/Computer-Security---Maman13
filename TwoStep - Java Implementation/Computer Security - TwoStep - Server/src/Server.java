@@ -39,13 +39,16 @@ public class Server extends Thread
 	{
 		exit = true;
 		
-		try {
+		try 
+		{
 			Server.server_socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.exit(0);
+		} 
+		catch (IOException e) 
+		{
+			System.exit(1);
 		}
 		
-		System.exit(1);
+		
 	}
 }

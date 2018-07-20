@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import Messages.*;
 
@@ -35,6 +34,10 @@ public class MessageReceiver extends Thread
 				getMessage();
 			} catch (Exception e) {}
 		}
+		
+		try {
+			user_socket.close();
+		} catch (IOException e) {}
 	}
 	
 	public void getMessage() throws ClassNotFoundException, IOException, CloneNotSupportedException
@@ -58,21 +61,23 @@ public class MessageReceiver extends Thread
 				}
 				
 				else if ( obj instanceof PortfolioMessage && registration != null)
-				{
-					
+				{					
 					PortfolioMessage msg = (PortfolioMessage)obj;
 					registration.receivePortfolio(msg.getSelectedImages());
 				}
 				
-				else
+				else if ( obj instanceof RegistrationStatusMessage && registration != null)
 				{
+					exit = true;
 				}
 			}
 		}
 		catch(IOException e)
 		{
 				System.err.println("Connection error!");
-				System.exit(1);
+				
+				user_socket.close();
+				exit = true;
 		}
 		catch(ClassNotFoundException e)
 		{

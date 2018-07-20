@@ -161,7 +161,21 @@ public class MessageHandler
 				msg_receiver.setExit();
 			}
 		}
-		
+		else if (message_type == NEW_LOGIN)
+		{
+			LoginRequestMessage msg = new LoginRequestMessage();
+
+			try
+			{
+				out.writeObject(msg);
+				out.flush();
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				msg_receiver.setExit();
+			}
+		}
 	}
 	
 	public void setExit()

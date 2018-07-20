@@ -1,4 +1,5 @@
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -10,7 +11,7 @@ public class Registration
 {
 	private static final int MAX_PORTFOLIO_SIZE = 100;
 	private static final int MAX_NUM_OF_PORTFOLIOS = 5;
-	
+	private static final String USER_AUTHENTICATION_PATH = "../userDetails/";
 	private int portfolio_size;
 	private int num_of_portfolios;
 	
@@ -109,23 +110,27 @@ public class Registration
 		}
 		else
 		{
+			writeUserFile();
 			sendRegistrationDoneSuccesfully();
 		}
 	}
 	public void writeUserFile(){
-
+		String username_path = USER_AUTHENTICATION_PATH + user.getUsername(); 
 		try {
-			FileOutputStream fos = new FileOutputStream("userObject.ser");
+			File userfile = new File(username_path);
+			userfile.getParentFile().mkdirs(); 
+			userfile.createNewFile(); 
+			
+			FileOutputStream fos = new FileOutputStream(userfile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			// write object to file
 			oos.writeObject(this.user);
-			System.out.println("Done");
-			// closing resources
 			oos.close();
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
+		//TODO: don't send sucessful message if failed 
 	}
 
 }

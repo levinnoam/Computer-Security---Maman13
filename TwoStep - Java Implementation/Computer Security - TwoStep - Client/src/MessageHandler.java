@@ -163,4 +163,9 @@ public class MessageHandler
 		}
 		
 	}
+	
+	public void setExit()
+	{
+		msg_receiver.setExit();
+	}
 }

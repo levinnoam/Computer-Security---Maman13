@@ -59,6 +59,7 @@ public class MessageHandler
 			{
 				System.err.println("Connection error!");
 				System.exit(1);
+				//TODO:: Don't exit. Close user_socket and MessageReceiver.
 			}
 		}
 		else if(message_type == PORTFOLIO)
@@ -74,11 +75,30 @@ public class MessageHandler
 			{
 				System.err.println("Connection error!");
 				System.exit(1);
+				//TODO:: Don't exit. Close user_socket and MessageReceiver.
 			}
 		}
-		else
-		{
-		
+		else if (message_type == REGISTRATION_STATUS)
+		{			
+			RegistrationStatusMessage msg = new RegistrationStatusMessage();
+			Boolean registration_succesful = (Boolean)(args[0]);
+			msg.setRegisterationStatus(registration_succesful);
+			
+			if (!registration_succesful)
+			{
+				msg.setRegistrationExceptions((ArrayList<Exception>)(args[1]));
+			}
+			
+			try
+			{
+				user_socket.writeObject(msg);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Connection error!");
+				System.exit(1);
+				//TODO:: Don't exit. Close user_socket and MessageReceiver.
+			}
 		}
 	}
 }

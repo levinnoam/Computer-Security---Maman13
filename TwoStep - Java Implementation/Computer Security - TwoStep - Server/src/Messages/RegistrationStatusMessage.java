@@ -18,7 +18,7 @@ public class RegistrationStatusMessage implements Serializable
 	public Boolean getRegistrationStatus() {
 		return registration_succesful;
 	}
-	public void setRegisteratiionStatus(Boolean register_succesful) {
+	public void setRegisterationStatus(Boolean register_succesful) {
 		this.registration_succesful = register_succesful;
 	}
 	

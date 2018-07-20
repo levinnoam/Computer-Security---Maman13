@@ -51,6 +51,19 @@ public class Registration
 		msg_hndlr.sendMessage(MessageHandler.PORTFOLIO, args);
 	}
 	
+	public void sendRegistrationDoneSuccesfully()
+	{
+		Object args[] = {true};
+		msg_hndlr.sendMessage(MessageHandler.REGISTRATION_STATUS, args);
+	}
+	
+	public void sendRegistrationFailed(ArrayList<Exception> exceptions)
+	{
+		Boolean registration_succesful = false;
+		Object args[] = {registration_succesful, exceptions};
+		msg_hndlr.sendMessage(MessageHandler.REGISTRATION_STATUS, args);
+	}
+	
 	public void sendCustomPortfolio(ArrayList<ImageIcon> custom_images)
 	{
 		cur_portfolio.generateCustomPortfolio(custom_images);
@@ -83,13 +96,20 @@ public class Registration
 		cur_portfolio.setSelectedInPortfolio(selected_images);
 		if(this.cur_portfolio.checkIfAnySelected() && this.cur_portfolios_received < this.num_of_portfolios)
 		{	
-			System.out.println("test");
 			user.addPortfolio(cur_portfolio);
 			
 			this.cur_portfolios_received++;			
-			sendDefaultPortfolio();
-			System.out.println("test2");
-			
+			sendDefaultPortfolio();			
+		}
+		else if (!this.cur_portfolio.checkIfAnySelected())
+		{
+			ArrayList<Exception> exceptions = new ArrayList<Exception>();
+			exceptions.add(new Exception("No images were selected!"));
+			sendRegistrationFailed(exceptions);
+		}
+		else
+		{
+			sendRegistrationDoneSuccesfully();
 		}
 	}
 	public void writeUserFile(){

@@ -94,7 +94,10 @@ public class MessageReceiver extends Thread
 				{
 					RegistrationStatusMessage msg = (RegistrationStatusMessage)obj;
 					if(msg.getRegistrationStatus() == true)
-						authentication.currentAuthenticationDone();
+					{
+						JOptionPane.showMessageDialog(null, "Registration Completed Succesfully!");
+						authentication.currentAuthenticationDone();						
+					}
 					else
 					{
 						ArrayList<Exception> registration_exceptions = msg.getRegistrationExceptions();

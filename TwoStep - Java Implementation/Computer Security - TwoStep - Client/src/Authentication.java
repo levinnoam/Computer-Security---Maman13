@@ -83,11 +83,16 @@ public class Authentication extends JFrame
          	registration = new Registration(this, num_of_portfolios, images_per_portfolio, msg_hndlr);
         }
         //Login
-        else
+        else if (login_or_register == 0)
         {
         	registration = null;
         	//login = new...
         }  	
+        else
+        {
+        	//Exit
+        	msg_hndlr.setExit();
+        }
      	
      	JOptionPane.showMessageDialog(null, wait);
 	}
